@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Mail, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
-import { toast } from 'sonner';
 
 const HeroSection = () => {
   const { t, isRTL } = useLanguage();
   const [email, setEmail] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      setIsSubmitted(true);
-      toast.success(t('hero.success'));
+      const subject = encodeURIComponent('Notify me - ArabFunded Launch');
+      const body = encodeURIComponent(`Please notify me at this email: ${email}`);
+      window.location.href = `mailto:arabfunded@gmail.com?subject=${subject}&body=${body}`;
       setEmail('');
-      setTimeout(() => setIsSubmitted(false), 3000);
     }
   };
 
@@ -74,8 +72,7 @@ const HeroSection = () => {
             </div>
             <button
               type="submit"
-              disabled={isSubmitted}
-              className="group px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 neon-box hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 neon-box hover:scale-105"
             >
               <span>{t('hero.cta')}</span>
               <ArrowIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

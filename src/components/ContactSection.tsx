@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Send, User, Mail, MessageSquare } from 'lucide-react';
-import { toast } from 'sonner';
 
 const ContactSection = () => {
   const { t, isRTL } = useLanguage();
@@ -10,18 +9,13 @@ const ContactSection = () => {
     email: '',
     message: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    toast.success(t('contact.success'));
+    const subject = encodeURIComponent(`Contact from ${formData.name}`);
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+    window.location.href = `mailto:arabfunded@gmail.com?subject=${subject}&body=${body}`;
     setFormData({ name: '', email: '', message: '' });
-    setIsSubmitting(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -96,8 +90,7 @@ const ContactSection = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="w-full py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 neon-box hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed animate-slide-up"
+              className="w-full py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 neon-box hover:scale-[1.02] animate-slide-up"
               style={{ animationDelay: '0.4s' }}
             >
               <span>{t('contact.send')}</span>
